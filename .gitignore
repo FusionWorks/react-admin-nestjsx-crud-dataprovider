@@ -1,3 +1,6 @@
 *.DS_Store
 *.lock
 *.env
+.idea
+/dist
+/node_modules
