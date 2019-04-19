@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fusionworks/ra-data-nest-crud": "^1.0.1",
     "prop-types": "^15.7.2",
     "ra-data-json-server": "^2.8.3",
     "react": "^16.8.6",

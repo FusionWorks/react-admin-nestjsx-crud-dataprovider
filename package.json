@@ -23,7 +23,7 @@
     "data-provider",
     "nestjsx/crud"
   ],
-  "author": "",
+  "author": "nzuza",
   "license": "ISC",
   "devDependencies": {
     "rollup": "^1.8.0",

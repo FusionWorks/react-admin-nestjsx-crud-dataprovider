@@ -10,7 +10,6 @@ export default {
   input: `src/${entryFile}.js`,
   output: [
     { file: pkg.main, name: entryFile, format: 'umd', sourcemap: true },
-    { file: pkg.module, format: 'es', sourcemap: true },
   ],
   // Indicate here external modules you don't wanna include in your bundle (i.e.: 'lodash')
   external: [],
@@ -27,7 +26,6 @@ export default {
     // https://github.com/rollup/rollup-plugin-node-resolve#usage
     resolve({
         jail:'/node_modules/',
-        // modulesOnly: true,
     }),
 
     // Resolve source maps to the original source

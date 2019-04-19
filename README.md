@@ -37,3 +37,17 @@ case CREATE:
 return { data: { ...params.data, id: json.id } };
 ```
 This is because of backwards compatibility compliance.
+
+## Example
+You can find an example of a project that uses ```nestjs``` and ```nestjsx/crud``` on backend and ```admin-ui``` with ```@fusionworks/ra-data-nest-crud``` data provider.
+
+If you need to run it, you need to go to api folder, install dependencies,
+change by your needs the config file for nestjs that is located in ```example/api/src/config/```, and run aplication.
+- ```  cd api ```
+- ``` npm i ```
+- ```npm run start:dev```
+
+For frontend part you need just to go to admin-ui folder, install dependencies, and run the app:
+- ``` cd admin-ui ```
+- ``` npm i ```
+- ``` npm start ```

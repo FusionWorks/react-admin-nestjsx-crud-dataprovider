@@ -1,6 +1,6 @@
 import React from 'react';
 import { Admin, Resource, ShowGuesser } from 'react-admin';
-import crudProvider from './providers/nestjs_crud'
+import crudProvider from '@fusionworks/ra-data-nest-crud'
 import { UsersList, UserCreate, UserEdit } from './Users'
 
 const dataProvider = crudProvider('http://localhost:3000');

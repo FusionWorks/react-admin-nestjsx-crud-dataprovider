@@ -10,8 +10,8 @@ import * as path from 'path';
   imports: [
     ConfigModule.load(path.resolve(__dirname, 'config', '*.{ts,js}')),
     TypeOrmModule.forRootAsync({
-      useFactory: (config: ConfigService) => config.get('database'),
-      inject: [ConfigService],
+        useFactory: (config: ConfigService) => config.get('database'),
+        inject: [ConfigService],
     }),
     UserModule
   ],
