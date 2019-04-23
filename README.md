@@ -1,7 +1,12 @@
-# @fusionworks/ra-data-nest-crud
+# @FusionWorks/ra-data-nest-crud
 
-Data provider for react-admin that works with **nestjsx/crud** back-end aplication.
-It's implemented on base of [ra-data-simple-rest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest)
+[![GitHub package.json version](https://img.shields.io/github/package-json/v/FusionWorks/react-admin-nestjsx-crud-dataprovider.svg?label=Version)](https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider) 
+![NPM](https://img.shields.io/npm/l/@fusionworks/ra-data-nest-crud.svg)
+
+
+
+```@FusionWorks/ra-data-nest-crud``` has been designed to make easier communication between a frontend application built with [react-admin](https://github.com/marmelab/react-admin),
+and a backend application built with [nestjs](https://github.com/nestjs/nest) framework and [nestjsx/crud](https://github.com/nestjsx/crud) for api prototyping.
 
 ## Install
 
@@ -42,7 +47,7 @@ This is because of backwards compatibility compliance.
 You can find an example of a project that uses ```nestjs``` and ```nestjsx/crud``` on backend and ```admin-ui``` with ```@fusionworks/ra-data-nest-crud``` data provider.
 
 If you need to run it, you need to go to api folder, install dependencies,
-change by your needs the config file for nestjs that is located in ```example/api/src/config/```, and run aplication.
+change by your needs the config file for nestjs that is located in ```example/api/src/config/```, and run application.
 - ```  cd api ```
 - ``` npm i ```
 - ```npm run start:dev```
