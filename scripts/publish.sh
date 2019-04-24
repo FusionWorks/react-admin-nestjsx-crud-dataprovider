@@ -1,6 +1,6 @@
 #!/bin/bash
 PACKAGE_VERSION=$(node -p -e "require('./package.json').version")
-REMOTE_VERSION=$(npm show @fusionworks/advanced-logger version)
+REMOTE_VERSION=$(npm show @fusionworks/react-admin-nestjsx-crud-dataprovider version)
 LAST_AUTHOR="$(git log -1 --pretty=format:'%an')"
 echo "Local version: $PACKAGE_VERSION"
 echo "Remote version: $REMOTE_VERSION"
@@ -13,8 +13,8 @@ elif [[ $TRAVIS_PULL_REQUEST = false && $TRAVIS_BRANCH == "master" ]]; then
   git checkout master
   git pull origin master
   npm run release
-  # https://github.com/FusionWorks/advanced-logger.git
-  git push "https://${GITHUB_TOKEN}@github.com/FusionWorks/advanced-logger.git" master
+  # https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider.git
+  git push "https://${GITHUB_TOKEN}@github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider.git" master
 
 	git checkout -
 else
