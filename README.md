@@ -5,8 +5,8 @@
 
 
 
-```@FusionWorks/ra-data-nest-crud``` has been designed to make easier communication between a frontend application built with [react-admin](https://github.com/marmelab/react-admin),
-and a backend application built with [nestjs](https://github.com/nestjs/nest) framework and [nestjsx/crud](https://github.com/nestjsx/crud) for api prototyping.
+```@FusionWorks/ra-data-nest-crud``` is a dataprovider for [react-admin](https://github.com/marmelab/react-admin), that has been designed to make easier communication between a frontend application built with [react-admin](https://github.com/marmelab/react-admin),
+and a backend application built with [nestjs](https://github.com/nestjs/nest) framework and [nestjsx/crud](https://github.com/nestjsx/crud).
 
 ## Install
 
