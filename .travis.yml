@@ -8,7 +8,6 @@ script:
   - npm ci
   - npm run test
   - npm run build
-  - node demo/local
 cache:
   pip: true
   directories:
