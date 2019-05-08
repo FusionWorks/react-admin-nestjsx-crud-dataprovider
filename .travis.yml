@@ -4,7 +4,6 @@ node_js:
 dist: dist
 sudo: required
 script:
-  - npm run lint
   - npm ci
   - npm run test
   - npm run build
