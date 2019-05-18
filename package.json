@@ -1,6 +1,6 @@
 {
   "name": "@fusionworks/ra-data-nest-crud",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "a data provider for react admin that handles request from nestjsx-crud server",
   "main": "dist/index.js",
   "scripts": {
