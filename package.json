@@ -37,6 +37,7 @@
   },
   "homepage": "https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider#readme",
   "dependencies": {
+    "@nestjsx/crud-request": "^4.1.0",
     "query-string": "^6.4.2"
   },
   "peerDependencies": {
