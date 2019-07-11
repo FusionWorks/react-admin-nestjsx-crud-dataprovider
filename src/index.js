@@ -1,4 +1,4 @@
-import { RequestQueryBuilder, CondOperator } from "@nestjsx/crud-request";
+import {RequestQueryBuilder, CondOperator} from "@nestjsx/crud-request";
 import {
   fetchUtils,
   GET_LIST,
@@ -34,18 +34,18 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
     const options = {};
     switch (type) {
       case GET_LIST: {
-        const { page, perPage } = params.pagination;
+        const {page, perPage} = params.pagination;
 
         const query = RequestQueryBuilder
-            .create({
-                  filter: composeFilter(params.filter)
-                }
-            )
-            .setLimit(perPage)
-            .setPage(page)
-            .sortBy(params.sort)
-            .setOffset((page - 1) * perPage)
-            .query();
+          .create({
+              filter: composeFilter(params.filter)
+            }
+          )
+          .setLimit(perPage)
+          .setPage(page)
+          .sortBy(params.sort)
+          .setOffset((page - 1) * perPage)
+          .query();
 
         url = `${apiUrl}/${resource}?${query}`;
 
@@ -58,20 +58,20 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
       }
       case GET_MANY: {
         const query = RequestQueryBuilder
-            .create()
-            .setFilter({
-              field: 'id',
-              operator: CondOperator.IN,
-              value: `${params.ids}`
-            })
-            .query();
+          .create()
+          .setFilter({
+            field: 'id',
+            operator: CondOperator.IN,
+            value: `${params.ids}`
+          })
+          .query();
 
         url = `${apiUrl}/${resource}?${query}`;
 
         break;
       }
       case GET_MANY_REFERENCE: {
-        const { page, perPage } = params.pagination;
+        const {page, perPage} = params.pagination;
         const filter = composeFilter(params.filter);
 
         filter.push({
@@ -81,13 +81,13 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
         });
 
         const query = RequestQueryBuilder
-            .create({
-              filter: filter
-            })
-            .sortBy(params.sort)
-            .setLimit(perPage)
-            .setOffset((page - 1) * perPage)
-            .query();
+          .create({
+            filter: filter
+          })
+          .sortBy(params.sort)
+          .setLimit(perPage)
+          .setOffset((page - 1) * perPage)
+          .query();
 
         url = `${apiUrl}/${resource}?${query}`;
 
@@ -113,11 +113,11 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
       default:
         throw new Error(`Unsupported fetch action type ${type}`);
     }
-    return { url, options };
+    return {url, options};
   };
 
   const convertHTTPResponse = (response, type, resource, params) => {
-    const { headers, json } = response;
+    const {headers, json} = response;
     switch (type) {
       case GET_LIST:
       case GET_MANY_REFERENCE:
@@ -126,44 +126,44 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
           total: json.total,
         };
       case CREATE:
-        return { data: { ...params.data, id: json.id } };
+        return {data: {...params.data, id: json.id}};
       default:
-        return { data: json };
+        return {data: json};
     }
   };
 
   return (type, resource, params) => {
     if (type === UPDATE_MANY) {
       return Promise.all(
-          params.ids.map(id =>
-              httpClient(`${apiUrl}/${resource}/${id}`, {
-                method: 'PUT',
-                body: JSON.stringify(params.data),
-              })
-          )
+        params.ids.map(id =>
+          httpClient(`${apiUrl}/${resource}/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(params.data),
+          })
+        )
       ).then(responses => ({
         data: responses.map(response => response.json),
       }));
     }
     if (type === DELETE_MANY) {
       return Promise.all(
-          params.ids.map(id =>
-              httpClient(`${apiUrl}/${resource}/${id}`, {
-                method: 'DELETE',
-              })
-          )
+        params.ids.map(id =>
+          httpClient(`${apiUrl}/${resource}/${id}`, {
+            method: 'DELETE',
+          })
+        )
       ).then(responses => ({
         data: responses.map(response => response.json),
       }));
     }
 
-    const { url, options } = convertDataRequestToHTTP(
-        type,
-        resource,
-        params
+    const {url, options} = convertDataRequestToHTTP(
+      type,
+      resource,
+      params
     );
     return httpClient(url, options).then(response =>
-        convertHTTPResponse(response, type, resource, params)
+      convertHTTPResponse(response, type, resource, params)
     );
   };
 };
