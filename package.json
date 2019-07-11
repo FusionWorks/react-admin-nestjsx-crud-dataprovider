@@ -26,6 +26,7 @@
   "author": "nzuza",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^6.0.1",
     "rollup": "^1.8.0",
     "rollup-plugin-commonjs": "^9.2.2",
     "rollup-plugin-json": "^4.0.0",
