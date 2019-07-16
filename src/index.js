@@ -1,3 +1,5 @@
+// @ts-check
+
 import { RequestQueryBuilder, CondOperator } from '@nestjsx/crud-request';
 import {
   fetchUtils,
@@ -17,7 +19,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
     const flatFilter = fetchUtils.flattenObject(paramsFilter);
     const filter = Object.keys(flatFilter).map(key => {
       const splitKey = key.split('||');
-      const ops = splitKey[1] ? splitKey[1] : 'cont';
+      const ops = splitKey[1] ? splitKey[1] : CondOperator.CONTAINS;
       let field = splitKey[0];
 
       if (field.indexOf('_') === 0 && field.indexOf('.') > -1) {
@@ -31,11 +33,13 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
   const convertDataRequestToHTTP = (type, resource, params) => {
     let url = '';
     const options = {};
+    const parsedResource = extractRealResourceAndParams(resource);
+
     switch (type) {
       case GET_LIST: {
         const { page, perPage } = params.pagination;
 
-        const query = RequestQueryBuilder
+        let query = RequestQueryBuilder
           .create({
             filter: composeFilter(params.filter),
           })
@@ -43,28 +47,64 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
           .setPage(page)
           .sortBy(params.sort)
           .setOffset((page - 1) * perPage)
-          .query();
 
-        url = `${apiUrl}/${resource}?${query}`;
+          if (parsedResource.params) {
+            if (parsedResource.params.join) {
+              parsedResource.params.join.forEach((join) => {
+                query = query.setJoin(join);
+              });
+            }
+  
+            if (parsedResource.params.fields) {
+              query = query.select(parsedResource.params.fields);
+            }
+          }
+
+        url = `${apiUrl}/${parsedResource}?${query.query()}`;
 
         break;
       }
       case GET_ONE: {
-        url = `${apiUrl}/${resource}/${params.id}`;
+        let query = RequestQueryBuilder.create();
+
+        if (parsedResource.params) {
+          if (parsedResource.params.join) {
+            parsedResource.params.join.forEach((join) => {
+              query = query.setJoin(join);
+            });
+          }
+
+          if (parsedResource.params.fields) {
+            query = query.select(parsedResource.params.fields);
+          }
+        }
+
+        url = `${apiUrl}/${parsedResource}/${params.id}?${query.query()}`;
 
         break;
       }
       case GET_MANY: {
-        const query = RequestQueryBuilder
+        let query = RequestQueryBuilder
           .create()
           .setFilter({
             field: 'id',
             operator: CondOperator.IN,
             value: `${params.ids}`,
-          })
-          .query();
+          });
 
-        url = `${apiUrl}/${resource}?${query}`;
+        if (parsedResource.params) {
+          if (parsedResource.params.join) {
+            parsedResource.params.join.forEach((join) => {
+              query = query.setJoin(join);
+            });
+          }
+
+          if (parsedResource.params.fields) {
+            query = query.select(parsedResource.params.fields);
+          }
+        }
+
+        url = `${apiUrl}/${parsedResource}?${query.query()}`;
 
         break;
       }
@@ -78,33 +118,44 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
           value: params.id,
         });
 
-        const query = RequestQueryBuilder
+        let query = RequestQueryBuilder
           .create({
             filter,
           })
           .sortBy(params.sort)
           .setLimit(perPage)
-          .setOffset((page - 1) * perPage)
-          .query();
+          .setOffset((page - 1) * perPage);
 
-        url = `${apiUrl}/${resource}?${query}`;
+        if (parsedResource.params) {
+          if (parsedResource.params.join) {
+            parsedResource.params.join.forEach((join) => {
+              query = query.setJoin(join);
+            });
+          }
+
+          if (parsedResource.params.fields) {
+            query = query.select(parsedResource.params.fields);
+          }
+        }
+
+        url = `${apiUrl}/${parsedResource}?${query.query()}`;
 
         break;
       }
       case UPDATE: {
-        url = `${apiUrl}/${resource}/${params.id}`;
+        url = `${apiUrl}/${parsedResource}/${params.id}`;
         options.method = 'PATCH';
         options.body = JSON.stringify(params.data);
         break;
       }
       case CREATE: {
-        url = `${apiUrl}/${resource}`;
+        url = `${apiUrl}/${parsedResource}`;
         options.method = 'POST';
         options.body = JSON.stringify(params.data);
         break;
       }
       case DELETE: {
-        url = `${apiUrl}/${resource}/${params.id}`;
+        url = `${apiUrl}/${parsedResource}/${params.id}`;
         options.method = 'DELETE';
         break;
       }
@@ -131,9 +182,11 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
   };
 
   return (type, resource, params) => {
+    const parsedResource = extractRealResourceAndParams(resource);
+
     if (type === UPDATE_MANY) {
       return Promise.all(
-        params.ids.map(id => httpClient(`${apiUrl}/${resource}/${id}`, {
+        params.ids.map(id => httpClient(`${apiUrl}/${parsedResource}/${id}`, {
           method: 'PUT',
           body: JSON.stringify(params.data),
         })),
@@ -144,7 +197,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
     }
     if (type === DELETE_MANY) {
       return Promise.all(
-        params.ids.map(id => httpClient(`${apiUrl}/${resource}/${id}`, {
+        params.ids.map(id => httpClient(`${apiUrl}/${parsedResource}/${id}`, {
           method: 'DELETE',
         })),
       ).then(responses => ({
@@ -162,3 +215,43 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
     );
   };
 };
+
+const MAGIC_SEPARATOR = "_._._._";
+
+/**
+ * @param {string} resourceMaybeWithEncoded
+ */
+function extractRealResourceAndParams(resourceMaybeWithEncoded) {
+  if (!resourceMaybeWithEncoded.includes(MAGIC_SEPARATOR)) {
+    return {
+      resource: resourceMaybeWithEncoded
+    };
+  }
+
+  const [resource, paramsStr] = resourceMaybeWithEncoded.split(MAGIC_SEPARATOR);
+
+  try {
+    /**
+     * @type {Pick<import("@nestjsx/crud-request").CreateQueryParams, "join" | "fields">} params
+     */
+    const params = JSON.parse(paramsStr);
+
+    return {
+      resource,
+      params
+    };
+  } catch (e) {
+    console.warn("failed to parse params", { resource, paramsStr });
+    return {
+      resource
+    };
+  }
+}
+
+/**
+ * @param {string} resource
+ * @param {Pick<import("@nestjsx/crud-request").CreateQueryParams, "join" | "fields">} params
+ */
+export function encodeParamsInResource(resource, params) {
+  return `${resource}${MAGIC_SEPARATOR}${JSON.stringify(params)}`;
+}
