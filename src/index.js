@@ -60,7 +60,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             }
           }
 
-        url = `${apiUrl}/${parsedResource}?${query.query()}`;
+        url = `${apiUrl}/${parsedResource.resource}?${query.query()}`;
 
         break;
       }
@@ -79,7 +79,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
           }
         }
 
-        url = `${apiUrl}/${parsedResource}/${params.id}?${query.query()}`;
+        url = `${apiUrl}/${parsedResource.resource}/${params.id}?${query.query()}`;
 
         break;
       }
@@ -104,7 +104,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
           }
         }
 
-        url = `${apiUrl}/${parsedResource}?${query.query()}`;
+        url = `${apiUrl}/${parsedResource.resource}?${query.query()}`;
 
         break;
       }
@@ -138,24 +138,24 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
           }
         }
 
-        url = `${apiUrl}/${parsedResource}?${query.query()}`;
+        url = `${apiUrl}/${parsedResource.resource}?${query.query()}`;
 
         break;
       }
       case UPDATE: {
-        url = `${apiUrl}/${parsedResource}/${params.id}`;
+        url = `${apiUrl}/${parsedResource.resource}/${params.id}`;
         options.method = 'PATCH';
         options.body = JSON.stringify(params.data);
         break;
       }
       case CREATE: {
-        url = `${apiUrl}/${parsedResource}`;
+        url = `${apiUrl}/${parsedResource.resource}`;
         options.method = 'POST';
         options.body = JSON.stringify(params.data);
         break;
       }
       case DELETE: {
-        url = `${apiUrl}/${parsedResource}/${params.id}`;
+        url = `${apiUrl}/${parsedResource.resource}/${params.id}`;
         options.method = 'DELETE';
         break;
       }
@@ -186,7 +186,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
 
     if (type === UPDATE_MANY) {
       return Promise.all(
-        params.ids.map(id => httpClient(`${apiUrl}/${parsedResource}/${id}`, {
+        params.ids.map(id => httpClient(`${apiUrl}/${parsedResource.resource}/${id}`, {
           method: 'PUT',
           body: JSON.stringify(params.data),
         })),
@@ -197,7 +197,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
     }
     if (type === DELETE_MANY) {
       return Promise.all(
-        params.ids.map(id => httpClient(`${apiUrl}/${parsedResource}/${id}`, {
+        params.ids.map(id => httpClient(`${apiUrl}/${parsedResource.resource}/${id}`, {
           method: 'DELETE',
         })),
       ).then(responses => ({

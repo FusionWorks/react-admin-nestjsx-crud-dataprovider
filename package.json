@@ -7,7 +7,7 @@
     "rollup": "rollup",
     "watch": "rollup -cw",
     "build": "rollup -c",
-    "postbuild": "node lib/copy_package && node lib/copy_readme",
+    "postbuild": "node lib/copy_package && node lib/copy_readme && node lib/copy_types",
     "patch": "npm version patch -m \"[skip travis] Release version: %s\"",
     "prerelease": "npm whoami && npm run patch && npm run build",
     "release": "npm publish dist --access public"
