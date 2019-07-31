@@ -19,20 +19,23 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(public service: UserService) {}
 
+  //http://localhost:3000/users?filter=firstname||starts||c&sort=id,DESC&per_page=10&offset=0&page=1
+  //http://localhost:3000/users/custom
   @Get('custom')
   listing(@ParsedRequest() req: CrudRequest) {
     console.log('request', req, this.base);
-    let options: any = {};
-    let filter: any = {
+    // let options: any = {};
+    let query: any = {
       parsed: {
         fields: [],
         paramsFilter: [],
-        filter: [{ field: 'firstname', operator: 'starts', value: 'jeff' }],
+        filter: [{ field: 'firstname', operator: 'starts', value: 'c' }],
         or: [],
         join: [],
         sort: [],
-        limit: undefined,
-        offset: undefined,
+        //if have limit&offset, it returns pagination&limit
+        limit: 10,
+        offset: 0,
         page: undefined,
         cache: undefined,
       },
@@ -62,7 +65,8 @@ export class UserController {
         // params: { id: { field: 'id', type: 'number', primary: true } },
       },
     };
-    return this.service.getMany(filter);
+    // return this.service.decidePagination(query.parsed, query.options);
+    return this.service.getMany(query);
   }
   get base(): CrudController<UserEntity> {
     return this;
