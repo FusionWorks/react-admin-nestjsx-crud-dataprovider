@@ -18,5 +18,6 @@ export class CommentEntity extends BaseEntity {
   user: UserEntity;
   @ApiModelProperty()
   @RelationId((entity: CommentEntity) => entity.user)
+  @Column()
   userId: number;
 }

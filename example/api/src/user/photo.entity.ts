@@ -18,5 +18,8 @@ export class PhotoEntity extends BaseEntity {
   user: Promise<UserEntity>;
   @ApiModelProperty()
   @RelationId((entity: PhotoEntity) => entity.user)
+  // @Column({
+  // unique: true,
+  // })
   userId: number;
 }

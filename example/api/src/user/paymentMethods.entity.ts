@@ -2,7 +2,7 @@ import BaseEntity from '../common/base.entity';
 import { Entity, Column, ManyToOne, RelationId } from 'typeorm';
 import { ApiModelPropertyOptional, ApiModelProperty } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
-@Entity({ name: 'comments' })
+@Entity({ name: 'paymentMethods' })
 export class PaymentMethodEntity extends BaseEntity {
   @ApiModelPropertyOptional()
   @Column({
