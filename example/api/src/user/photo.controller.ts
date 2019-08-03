@@ -17,6 +17,7 @@ import { PaymentMethodEntity } from './paymentMethods.entity';
 import { CommentEntity } from './comment.entity';
 import { PaymentService } from './PaymentService';
 import { CommentService } from './CommentService';
+import { CategoryEntity } from './category.entity';
 @Crud({
   model: {
     type: PhotoEntity,
@@ -27,9 +28,12 @@ export class PhotoController {
   constructor(
     public service: PhotoService,
     public paymentService: PaymentService,
+    public userService: UserService,
     public commentService: CommentService,
     @InjectRepository(PhotoEntity)
     public repo: Repository<PhotoEntity>,
+    @InjectRepository(CategoryEntity)
+    public categoryRepo: Repository<CategoryEntity>,
     @InjectRepository(UserEntity)
     public userRepo: Repository<UserEntity>,
     @InjectRepository(PaymentMethodEntity)
@@ -42,14 +46,15 @@ export class PhotoController {
   //http://localhost:3000/users/custom
   //Study the loading
   @Get('custom')
-  listing(@ParsedRequest() req: CrudRequest) {
+  async listing(@ParsedRequest() req: CrudRequest) {
     // console.log('request', req, this.base);
     // let options: any = {};
     let query: any = {
       parsed: {
         fields: [],
         paramsFilter: [],
-        filter: [{ field: 'userId', operator: 'eq', value: 1 }],
+        // filter: [{ field: 'userId', operator: 'eq', value: 1 }],
+        filter: [],
         or: [],
         join: [],
         sort: [],
@@ -86,7 +91,58 @@ export class PhotoController {
       },
     };
     // return this.service.decidePagination(query.parsed, query.options);
-    return this.commentService.getMany(query);
+    // return this.commentService.getMany(query);
+    return {
+      comment: await this.commentService.getMany(query),
+      user: await this.userService.getMany(query),
+    };
+  }
+  @Get('customUser')
+  listingUser(@ParsedRequest() req: CrudRequest) {
+    // console.log('request', req, this.base);
+    // let options: any = {};
+    let query: any = {
+      parsed: {
+        fields: [],
+        paramsFilter: [],
+        filter: [],
+        or: [],
+        join: [],
+        sort: [],
+        //if have limit&offset, it returns pagination&limit
+        limit: 10,
+        offset: 0,
+        page: undefined,
+        cache: undefined,
+      },
+      options: {
+        query: {},
+        // routes: {
+        // getManyBase: { interceptors: [], decorators: [] },
+        // getOneBase: { interceptors: [], decorators: [] },
+        // createOneBase: { interceptors: [], decorators: [] },
+        // createManyBase: { interceptors: [], decorators: [] },
+        // updateOneBase: {
+        //   interceptors: [],
+        //   decorators: [],
+        //   allowParamsOverride: false,
+        // },
+        // replaceOneBase: {
+        //   interceptors: [],
+        //   decorators: [],
+        //   allowParamsOverride: false,
+        // },
+        // deleteOneBase: {
+        //   interceptors: [],
+        //   decorators: [],
+        //   returnDeleted: false,
+        // },
+        // },
+        // params: { id: { field: 'id', type: 'number', primary: true } },
+      },
+    };
+    // return this.service.decidePagination(query.parsed, query.options);
+    return this.userService.getMany(query);
   }
 
   @Get('raw')
@@ -108,7 +164,18 @@ no n+1 too
 
 purely is javascript is slow for 10000
     */
-    return this.commentRepo.find();
+    return this.commentRepo.find({ userId: 1 });
+  }
+  @Get('rawUser')
+  listingRawUser(@ParsedRequest() req: CrudRequest) {
+    /*
+SELECT `CommentEntity`.`id` AS `CommentEntity_id`, `CommentEntity`.`created` AS `CommentEntity_created`, `CommentEntity`.`updated` AS `CommentEntity_updated`, `CommentEntity`.`text` AS `CommentEntity_text`, `CommentEntity`.`userId` AS `CommentEntity_userId` FROM `comments` `CommentEntity
+
+no n+1 too
+
+purely is javascript is slow for 10000
+    */
+    return this.userRepo.find();
   }
   @Get('rawPaymentMethod')
   listingPaymentMethod(@ParsedRequest() req: CrudRequest) {
@@ -123,11 +190,18 @@ would suffer from n+1
   }
   @Get('prepareData')
   async prepareData() {
+    let aCategory = await this.categoryRepo.save({
+      name: 'A class',
+    });
+    let vipCategory = await this.categoryRepo.save({
+      name: 'vip category class',
+    });
     let user = await this.userRepo.save({
       email: 'jeff chung',
       password: '2312312',
       firstname: 'asdasd',
       lastname: 'ddd',
+      categorys: [aCategory, vipCategory],
     });
     await this.userRepo.save({
       email: 'jeff asdsdachung',

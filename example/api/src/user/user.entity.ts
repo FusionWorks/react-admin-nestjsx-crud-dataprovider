@@ -1,9 +1,17 @@
 import BaseEntity from '../common/base.entity';
-import { Entity, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+  RelationId,
+} from 'typeorm';
 import { ApiModelPropertyOptional } from '@nestjs/swagger';
 import { PhotoEntity } from './photo.entity';
 import { CommentEntity } from './comment.entity';
 import { PaymentMethodEntity } from './paymentMethods.entity';
+import { CategoryEntity } from './category.entity';
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
   @ApiModelPropertyOptional()
@@ -34,4 +42,10 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(type => PaymentMethodEntity, paymentMethod => paymentMethod.user) // note: we will create author property in the Photo class below
   paymentMethods: PaymentMethodEntity[];
+  @ManyToMany(type => CategoryEntity)
+  @JoinTable()
+  categorys: CategoryEntity[];
+
+  @RelationId((user: UserEntity) => user.categorys)
+  categoryIds: number[];
 }

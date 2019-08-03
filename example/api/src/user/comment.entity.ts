@@ -11,13 +11,14 @@ export class CommentEntity extends BaseEntity {
   text: string;
 
   @ManyToOne(type => UserEntity, user => user.comments, {
-    nullable: false,
+    nullable: true,
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   }) // note: we will create author property in the Photo class below
   user: UserEntity;
   @ApiModelProperty()
   @RelationId((entity: CommentEntity) => entity.user)
-  @Column()
+  //this is a must for one to many relationship
+  @Column({ nullable: true })
   userId: number;
 }

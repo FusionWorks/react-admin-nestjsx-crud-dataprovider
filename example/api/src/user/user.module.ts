@@ -10,6 +10,7 @@ import { PaymentMethodEntity } from './paymentMethods.entity';
 import { CommentEntity } from './comment.entity';
 import { PaymentService } from './PaymentService';
 import { CommentService } from './CommentService';
+import { CategoryEntity } from './category.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -17,6 +18,7 @@ import { CommentService } from './CommentService';
       PhotoEntity,
       PaymentMethodEntity,
       CommentEntity,
+      CategoryEntity,
     ]),
   ],
   controllers: [UserController, PhotoController],
