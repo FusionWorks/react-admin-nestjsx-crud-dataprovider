@@ -7,5 +7,5 @@ export default {
   database: 'testing',
   entities: ['src/**/*.entity.ts'],
   synchronize: true,
-  logging: false,
+  logging: true,
 };
