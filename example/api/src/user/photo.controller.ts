@@ -18,6 +18,8 @@ import { CommentEntity } from './comment.entity';
 import { PaymentService } from './PaymentService';
 import { CommentService } from './CommentService';
 import { CategoryEntity } from './category.entity';
+import { GroupEntity } from './group.entity';
+import { UserToGroupEntity } from './userTogroup.entity';
 @Crud({
   model: {
     type: PhotoEntity,
@@ -36,6 +38,10 @@ export class PhotoController {
     public categoryRepo: Repository<CategoryEntity>,
     @InjectRepository(UserEntity)
     public userRepo: Repository<UserEntity>,
+    @InjectRepository(GroupEntity)
+    public groupRepo: Repository<GroupEntity>,
+    @InjectRepository(UserToGroupEntity)
+    public userToGroupRepo: Repository<UserToGroupEntity>,
     @InjectRepository(PaymentMethodEntity)
     public paymentMethodRepo: Repository<PaymentMethodEntity>,
     @InjectRepository(CommentEntity)
@@ -196,19 +202,29 @@ would suffer from n+1
     let vipCategory = await this.categoryRepo.save({
       name: 'vip category class',
     });
+    let groupA = await this.groupRepo.save({
+      name: 'Powerful',
+    });
     let user = await this.userRepo.save({
       email: 'jeff chung',
       password: '2312312',
       firstname: 'asdasd',
       lastname: 'ddd',
+
       categorys: [aCategory, vipCategory],
     });
+    let userToGroup = new UserToGroupEntity();
+    userToGroup.user = user;
+    userToGroup.order = 1;
+    userToGroup.group = groupA;
+    await this.userToGroupRepo.save(userToGroup);
     await this.userRepo.save({
       email: 'jeff asdsdachung',
       password: '2312311qw2',
       firstname: 'asdaseeed',
       lastname: 'dddee',
     });
+
     // await this.userRepo.findOneOrFail(1);
     console.log('user', user, Promise.resolve(user));
     for (let i = 0; i < 100; i++) {
@@ -231,7 +247,7 @@ would suffer from n+1
     for (let i = 0; i < 100; i++) {
       await this.commentRepo.save({
         text: 'random comment' + Math.random(),
-        user: user,
+        user: i == 0 ? null : user,
       });
     }
   }

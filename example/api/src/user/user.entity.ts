@@ -12,6 +12,7 @@ import { PhotoEntity } from './photo.entity';
 import { CommentEntity } from './comment.entity';
 import { PaymentMethodEntity } from './paymentMethods.entity';
 import { CategoryEntity } from './category.entity';
+import { UserToGroupEntity } from './userTogroup.entity';
 @Entity({ name: 'users' })
 export class UserEntity extends BaseEntity {
   @ApiModelPropertyOptional()
@@ -48,4 +49,10 @@ export class UserEntity extends BaseEntity {
 
   @RelationId((user: UserEntity) => user.categorys)
   categoryIds: number[];
+
+  @OneToMany(type => UserToGroupEntity, userToGroup => userToGroup.user)
+  public userToGroups!: UserToGroupEntity[];
+
+  @RelationId((user: UserEntity) => user.userToGroups)
+  userToGroupIds: number[];
 }

@@ -11,6 +11,8 @@ import { CommentEntity } from './comment.entity';
 import { PaymentService } from './PaymentService';
 import { CommentService } from './CommentService';
 import { CategoryEntity } from './category.entity';
+import { GroupEntity } from './group.entity';
+import { UserToGroupEntity } from './userTogroup.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -19,6 +21,8 @@ import { CategoryEntity } from './category.entity';
       PaymentMethodEntity,
       CommentEntity,
       CategoryEntity,
+      GroupEntity,
+      UserToGroupEntity,
     ]),
   ],
   controllers: [UserController, PhotoController],
