@@ -9,20 +9,25 @@ import {
 } from '@nestjsx/crud';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
+import { CategoryService } from './category.service';
+import { CategoryEntity } from './category.entity';
+import { CommentService } from './CommentService';
+import { CommentEntity } from './comment.entity';
+import { GroupService } from './group.service';
+import { GroupEntity } from './group.entity';
+import { PaymentMethodEntity } from './paymentMethods.entity';
+import { PaymentService } from './PaymentService';
+import { UserToGroupService } from './userToGroup.service';
+import { UserToGroupEntity } from './userTogroup.entity';
 
 @Crud({
   model: {
-    type: UserEntity,
-  },
-  query: {
-    join: {
-      categorys: {},
-    },
+    type: UserToGroupEntity,
   },
 })
-@Controller('users')
-export class UserController {
-  constructor(public service: UserService) {}
+@Controller('userToGroups')
+export class UserToGroupController {
+  constructor(public service: UserToGroupService) {}
 
   //http://localhost:3000/users?filter=firstname||starts||c&sort=id,DESC&per_page=10&offset=0&page=1
   //http://localhost:3000/users/custom
@@ -34,7 +39,7 @@ export class UserController {
       parsed: {
         fields: [],
         paramsFilter: [],
-        filter: [{ field: 'firstname', operator: 'starts', value: 'c' }],
+        filter: [],
         or: [],
         join: [],
         sort: [],
@@ -73,16 +78,16 @@ export class UserController {
     // return this.service.decidePagination(query.parsed, query.options);
     return this.service.getMany(query);
   }
-  get base(): CrudController<UserEntity> {
+  get base(): CrudController<UserToGroupEntity> {
     return this;
   }
   @Override()
   getMany(@ParsedRequest() req: CrudRequest) {
+    console.log('execute', req.parsed, req.options);
     if (!req.parsed.limit) {
       req.parsed.limit = 10000;
       req.parsed.offset = 0;
     }
-    console.log('execute', req.parsed, req.options);
     return this.base.getManyBase(req);
   }
 }

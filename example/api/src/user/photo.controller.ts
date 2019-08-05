@@ -25,7 +25,7 @@ import { UserToGroupEntity } from './userTogroup.entity';
     type: PhotoEntity,
   },
 })
-@Controller('photo')
+@Controller('photos')
 export class PhotoController {
   constructor(
     public service: PhotoService,
@@ -256,6 +256,10 @@ would suffer from n+1
   }
   @Override()
   getMany(@ParsedRequest() req: CrudRequest) {
+    if (!req.parsed.limit) {
+      req.parsed.limit = 10000;
+      req.parsed.offset = 0;
+    }
     console.log('execute', req.parsed, req.options);
     return this.base.getManyBase(req);
   }

@@ -39,7 +39,9 @@ export class UserEntity extends BaseEntity {
   photos: PhotoEntity[];
 
   @OneToMany(type => CommentEntity, comment => comment.user) // note: we will create author property in the Photo class below
-  comments: PhotoEntity[];
+  comments: CommentEntity[];
+  @RelationId((user: UserEntity) => user.comments)
+  commentIds: number[];
 
   @OneToMany(type => PaymentMethodEntity, paymentMethod => paymentMethod.user) // note: we will create author property in the Photo class below
   paymentMethods: PaymentMethodEntity[];
@@ -56,3 +58,11 @@ export class UserEntity extends BaseEntity {
   @RelationId((user: UserEntity) => user.userToGroups)
   userToGroupIds: number[];
 }
+/*
+
+comments foreign id done
+
+
+,categories,userToGroup ids
+
+*/
