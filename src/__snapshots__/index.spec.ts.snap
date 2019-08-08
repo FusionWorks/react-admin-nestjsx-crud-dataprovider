@@ -1,0 +1,317 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Basic tests GET_ONE 1 1`] = `
+Object {
+  "data": Object {
+    "id": 42,
+    "title": "The Hitchhiker's guide to the galaxy",
+  },
+}
+`;
+
+exports[`Basic tests GET_ONE 1 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "https://test.test/api/books/42?",
+      Object {},
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 42,
+          "title": "The Hitchhiker's guide to the galaxy",
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`CREATE 1 CREATE 1 1`] = `
+Object {
+  "data": Object {
+    "id": 42,
+    "pages": 3,
+    "title": "The Hitchhiker's guide to the galaxy",
+    "votes": Array [],
+  },
+}
+`;
+
+exports[`CREATE 1 CREATE 1 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "https://test.test/api/books",
+      Object {
+        "body": undefined,
+        "method": "POST",
+      },
+    ],
+    Array [
+      "https://test.test/api/books/42?",
+      Object {},
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 42,
+          "pages": 3,
+          "title": "The Hitchhiker's guide to the galaxy",
+        },
+      },
+    },
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 42,
+          "pages": 3,
+          "title": "The Hitchhiker's guide to the galaxy",
+          "votes": Array [],
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`DELETE_MANY 1 DELETE_MANY 1 1`] = `
+Object {
+  "data": Array [
+    42,
+    43,
+  ],
+}
+`;
+
+exports[`DELETE_MANY 1 DELETE_MANY 1 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "https://test.test/api/books/42",
+      Object {
+        "method": "DELETE",
+      },
+    ],
+    Array [
+      "https://test.test/api/books/43",
+      Object {
+        "method": "DELETE",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {},
+    },
+    Object {
+      "type": "return",
+      "value": Object {},
+    },
+  ],
+}
+`;
+
+exports[`UPDATE 1 UPDATE 1 1`] = `
+Object {
+  "data": Object {
+    "id": 42,
+    "pages": Array [
+      Object {
+        "content": "blabla",
+      },
+    ],
+    "title": "For Whom The Bell Tolls",
+  },
+}
+`;
+
+exports[`UPDATE 1 UPDATE 1 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "https://test.test/api/books/42",
+      Object {
+        "body": "{\\"title\\":\\"For Whom The Bell Tolls\\"}",
+        "method": "PATCH",
+      },
+    ],
+    Array [
+      "https://test.test/api/books/42?",
+      Object {},
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 42,
+          "title": "For Whom The Bell Tolls",
+        },
+      },
+    },
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 42,
+          "pages": Array [
+            Object {
+              "content": "blabla",
+            },
+          ],
+          "title": "For Whom The Bell Tolls",
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`UPDATE_MANY 1 UPDATE_MANY 1 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "data": Object {
+        "id": 42,
+        "pages": Array [
+          Object {
+            "content": "blabla",
+          },
+        ],
+        "title": "The Hitchhiker's guide to the galaxy",
+      },
+    },
+    Object {
+      "data": Object {
+        "id": 50,
+        "pages": Array [
+          Object {
+            "content": "blabla",
+          },
+        ],
+        "title": "The Hitchhiker's guide to the galaxy 2",
+      },
+    },
+  ],
+}
+`;
+
+exports[`UPDATE_MANY 1 UPDATE_MANY 1 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "https://test.test/api/books/42",
+      Object {
+        "body": "{\\"views\\":0}",
+        "method": "PUT",
+      },
+    ],
+    Array [
+      "https://test.test/api/books/50",
+      Object {
+        "body": "{\\"views\\":0}",
+        "method": "PUT",
+      },
+    ],
+    Array [
+      "https://test.test/api/books/42?",
+      Object {},
+    ],
+    Array [
+      "https://test.test/api/books/50?",
+      Object {},
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 42,
+          "title": "The Hitchhiker's guide to the galaxy",
+        },
+      },
+    },
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 50,
+          "title": "The Hitchhiker's guide to the galaxy 2",
+        },
+      },
+    },
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 42,
+          "pages": Array [
+            Object {
+              "content": "blabla",
+            },
+          ],
+          "title": "The Hitchhiker's guide to the galaxy",
+        },
+      },
+    },
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 50,
+          "pages": Array [
+            Object {
+              "content": "blabla",
+            },
+          ],
+          "title": "The Hitchhiker's guide to the galaxy 2",
+        },
+      },
+    },
+  ],
+}
+`;
+
+exports[`encodeParamsInResource tests encodeParamsInResource test 1 1`] = `"books_._._._{\\"fields\\":[\\"id\\",\\"name\\",\\"year\\"],\\"join\\":[{\\"field\\":\\"pages\\",\\"select\\":[\\"number\\",\\"words\\"]},{\\"field\\":\\"author\\",\\"select\\":[\\"id\\",\\"name\\"]},{\\"field\\":\\"author.favoriteFood\\",\\"select\\":[\\"id\\",\\"name\\"]}]}"`;
+
+exports[`encoded params tests encoded params test 1 1`] = `
+Object {
+  "data": Object {
+    "id": 1,
+  },
+}
+`;
+
+exports[`encoded params tests encoded params test 1 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "https://test.test/api/books/5?join[]=pages||number,words&join[]=author||id,name&join[]=author.favoriteFood||id,name&fields=id,name,year",
+      Object {},
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": Object {
+        "json": Object {
+          "id": 1,
+        },
+      },
+      "wasPromise": true,
+    },
+  ],
+}
+`;
