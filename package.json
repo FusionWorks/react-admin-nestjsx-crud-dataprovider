@@ -66,5 +66,9 @@
   "peerDependencies": {
     "ra-core": "^2.9.5",
     "@nestjsx/crud-request": "^4.2.0"
-  }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }
