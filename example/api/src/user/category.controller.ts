@@ -24,7 +24,7 @@ export class CategoryController {
   //http://localhost:3000/users/custom
   @Get('custom')
   listing(@ParsedRequest() req: CrudRequest) {
-    console.log('request', req, this.base);
+    console.log('request', req);
     // let options: any = {};
     let query: any = {
       parsed: {

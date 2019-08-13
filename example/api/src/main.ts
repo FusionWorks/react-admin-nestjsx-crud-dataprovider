@@ -3,9 +3,10 @@ import { AppModule } from './app.module';
 import { setupSwagger } from './swagger';
 
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { CrudRequestInterceptor } from '@nestjsx/crud';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
-
+  app.useGlobalInterceptors(new CrudRequestInterceptor());
   setupSwagger(app);
 
   const options = new DocumentBuilder()
