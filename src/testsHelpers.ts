@@ -1,5 +1,10 @@
-// @ts-ignore
-export async function asyncResultsToValue(jestFned) {
+/**
+ * when the given return value of a spy is a promise,
+ * expand it to the resolved value, for snapshotting
+ *
+ * @param jestFned
+ */
+export async function asyncResultsToValue(jestFned: any) {
   // @ts-ignore
   jestFned.mock.results = await Promise.all(
     (jestFned.mock.results || []).map(
@@ -20,6 +25,11 @@ export async function asyncResultsToValue(jestFned) {
   return jestFned;
 }
 
+/**
+ *  Create a jest spy that return the given values one by one for each call
+ *
+ * @param toReturn array of values to return
+ */
 export function createJestFnSerialReturn(toReturn: any[]) {
   let callCounter = 0;
 
