@@ -15,7 +15,7 @@
     "test": "jest",
     "tsc": "tsc",
     "eslint": "eslint",
-    "build-ts-declerations": "tsc --emitDeclarationOnly --noEmit false --declaration --isolatedModules false",
+    "build-ts-declerations": "tsc -p tsconfig.build.json --emitDeclarationOnly --noEmit false --declaration --isolatedModules false",
     "lint": "eslint src --ext .ts && tsc --noEmit"
   },
   "repository": {
@@ -51,8 +51,6 @@
     "rimraf": "^2.6.3",
     "rollup": "^1.19.4",
     "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-commonjs": "^9.2.2",
-    "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-resolve": "^4.2.4",
     "rollup-plugin-peer-deps-external": "^2.2.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
