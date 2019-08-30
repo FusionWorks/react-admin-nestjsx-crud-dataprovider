@@ -1,3 +1,5 @@
+import { QueryFields, QueryJoin } from "@nestjsx/crud-request";
+
 export type POSSIBLE_ACTIONS =
   | "GET_LIST"
   | "GET_ONE"
@@ -9,6 +11,9 @@ export type POSSIBLE_ACTIONS =
   | "DELETE"
   | "DELETE_MANY";
 
+export type FetchJsonType = (url: any, options?: ObjectLiteral | undefined) => Promise<{ status: number; headers: Headers; body: string; json: any; }>;
+
+
 export interface ConfigurationEntry {
   requestMutator?(request: ClientRequestType): ClientRequestType;
   responseMutator?(
@@ -17,21 +22,22 @@ export interface ConfigurationEntry {
   ): ClientResposeType;
 }
 
-export type IntergrateParams = Pick<
-  import("@nestjsx/crud-request").CreateQueryParams,
-  "join" | "fields"
->;
+export type IntergrateParams = QueryFields | QueryJoin;
 
 export interface ClientRequestType {
   type: POSSIBLE_ACTIONS;
   resource: string;
-  params: any;
+  params: ObjectLiteral;
   integratedParams?: IntergrateParams;
 }
 
 export interface ClientResposeType {
-  response: any;
+  response: ObjectLiteral;
   type: POSSIBLE_ACTIONS;
   resource: string;
-  params: any;
+  params: ObjectLiteral;
+}
+
+export interface ObjectLiteral {
+  [key: string]: any;
 }

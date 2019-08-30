@@ -1,35 +1,32 @@
 import { fetchUtils } from "ra-core";
 
-import { MAGIC_SEPARATOR, makeNestjsxCrudRequest } from "./nonePublicStuff";
+import { IntergrateParams, ConfigurationEntry, FetchJsonType } from "./interfaces";
+import { MAGIC_SEPARATOR } from "./constants";
+
+import { makeRequest } from "./functions/makeRequest";
 
 export default function createNestjsxCrudClient(
   apiUrl: string,
-  httpClient: any = fetchUtils.fetchJson
+  httpClient: FetchJsonType = fetchUtils.fetchJson,
 ) {
-  return makeNestjsxCrudRequest.bind(null, apiUrl, httpClient, {});
+  return makeRequest.bind(null, apiUrl, httpClient, {});
 }
 
 /**
  * Not documented yet. Experimental.
+   * Will give us a hook to customize requets/responses
  */
 export function createNestjsxCrudClientWithConfig(
   apiUrl: string,
-  httpClient: any = fetchUtils.fetchJson,
-  /**
-   * Not documented yet. Experimental.
-   * Will give us a hook to customize requets/responses
-   */
-  configuration: import("./interfaces").ConfigurationEntry = {}
+  httpClient: FetchJsonType = fetchUtils.fetchJson,
+  configuration: ConfigurationEntry = {},
 ) {
-  return makeNestjsxCrudRequest.bind(null, apiUrl, httpClient, configuration);
+  return makeRequest.bind(null, apiUrl, httpClient, configuration);
 }
 
 export function encodeParamsInResource(
   resource: string,
-  paramsToIntegrate: Pick<
-    import("@nestjsx/crud-request").CreateQueryParams,
-    "join" | "fields"
-  >
+  paramsToIntegrate: IntergrateParams,
 ) {
   return `${resource}${MAGIC_SEPARATOR}${JSON.stringify(paramsToIntegrate)}`;
 }

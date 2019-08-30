@@ -1,4 +1,4 @@
-import createDataProvider, { encodeParamsInResource } from "./index";
+import createDataProvider, { encodeParamsInResource } from "../index";
 import { asyncResultsToValue, createJestFnSerialReturn } from "./testsHelpers";
 
 describe("Basic tests", () => {
