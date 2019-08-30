@@ -3,7 +3,7 @@ import { QueryJoin } from "@nestjsx/crud-request";
 
 export function extractRealData(resource: string) {
   // Not encoded, return it
-  if (resource.indexOf(MAGIC_SEPARATOR) !== -1) {
+  if (resource.indexOf(MAGIC_SEPARATOR) === -1) {
     return {
       realResource: resource,
     };
@@ -18,8 +18,8 @@ export function extractRealData(resource: string) {
       realResource,
       integratedParams,
     };
-  } catch (e) {
-    console.warn("failed to parse params", { realResource, paramsStr });
+  } catch (error) {
+    console.warn("failed to parse params", { realResource, paramsStr, error });
 
     return {
       realResource,

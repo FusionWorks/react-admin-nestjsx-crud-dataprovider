@@ -154,5 +154,6 @@ export function dataRequestToHTTP(
     default:
       throw new Error(`Unsupported fetch action type ${type}`);
   }
+
   return { url, options };
 }
