@@ -6,7 +6,7 @@
   "scripts": {
     "rollup": "rollup",
     "watch": "rollup -cw",
-    "build": "rimraf -fr dist && rollup -c && npm run build",
+    "build": "rimraf -fr dist && rollup -c",
     "patch": "npm version patch -m \"[skip travis] Release version: %s\"",
     "prerelease": "npm whoami && npm run patch && npm run lint && npm run build",
     "release": "npm publish dist --access public",
