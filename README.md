@@ -36,12 +36,86 @@ const App = () => (
 export default App;
 ```
 
-**Note**: In case of REST verb "CREATE" consider that the response body is the same as the request body but with the object ID injected .
+## Working with relations, and selecting spesific fields
+
+*Quick and less flexible: [Set the relations/fields to eager on server CRUD config side](https://github.com/nestjsx/crud/wiki/Controllers#query)*
+
+Due to how nestjsx/crud works, in order to select only spesific fields, or to join relations, we need to add spesific query params.  
+but, REACT ADMIN does not provide a way to configure that on his side. (as to date [react-admin#3411](https://github.com/marmelab/react-admin/issues/3411)).  
+To solve that, we've added a way to embed these configurations in the resource name in JSON string form.
+In case you want want to work with relationship/select spesific fields:
+```jsx
+import createDataProvider, { encodeParamsInResource } from "@fusionworks/ra-data-nest-crud";
+<Admin dataProvider={createDataProvider("/api/...")} >
+...
+<Resource
+  // without setting a label, you will have the JSON inside the generated label
+  options={{ label: 'Books' }}
+  name={
+    encodeParamsInResource("books", 
+    // passed to @nestjsx/crud-request to generate the url
+    {
+      fields: ["id", "name", "year"],
+      join: [
+        {
+          field: "pages",
+          select: ["number", "words"]
+        },
+        {
+          field: "author",
+          select: ["id", "name"]
+        },
+        {
+          field: "author.favoriteFood",
+          select: ["id", "name"]
+        }
+      ]
+    })}
+  list={BooksList}
+/>
+...
+</Admin>
+
 ```
-case CREATE:
-return { data: { ...params.data, id: json.id } };
+
+
+### Handeling references/Permutations and encodeParamsInResource.
+Due to how REACT ADMIN works, each variant of resource, even with same name, but using `encodeParamsInResource`, is seen as a different resource.
+Means that if on one of your components you've used reference input/field based on  `encodeParamsInResource` with different parameters than the top level resource,
+You will need to add "headless" resource with same configurations. (What is it headless? what? [see the tags resource here](https://marmelab.com/react-admin/Resource.html#the-resource-component)) 
+
+For example:
+```jsx
+// CategoryEdit or what ever
+<ReferenceInput
+  label="Template"
+  source="template.id"
+  reference={encodeParamsInResource('templates', {
+    join: [
+      {
+        field: 'template',
+      },
+    ],
+  })}
+>
+  <AutocompleteInput optionText="name" >
+</ReferenceInput>
+
+<Admin>
+// ...
+<Resource name={encodeParamsInResource('templates', {
+    join: [
+      {
+        field: 'template',
+      },
+    ],
+  })} />
+// ...
+</Admin>
+
 ```
-This is because of backwards compatibility compliance.
+
+**Note**: In case of REST verb "CREATE" and "UPDATE" consider that the data provider will make GET_ONE request hehind the scene to fetch fresh copy of all of the record after the update/create.
 
 ## Example
 You can find an example of a project that uses ```nestjs``` and ```nestjsx/crud``` on backend and ```admin-ui``` with ```@fusionworks/ra-data-nest-crud``` data provider.

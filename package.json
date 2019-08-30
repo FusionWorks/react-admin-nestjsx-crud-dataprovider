@@ -1,16 +1,21 @@
 {
   "name": "@fusionworks/ra-data-nest-crud",
-  "version": "1.0.7",
+  "version": "1.0.12",
   "description": "a data provider for react admin that handles request from nestjsx-crud server",
   "main": "dist/index.js",
   "scripts": {
     "rollup": "rollup",
     "watch": "rollup -cw",
-    "build": "rollup -c",
-    "postbuild": "node lib/copy_package && node lib/copy_readme",
+    "build": "rimraf -fr dist && rollup -c",
     "patch": "npm version patch -m \"[skip travis] Release version: %s\"",
-    "prerelease": "npm whoami && npm run patch && npm run build",
-    "release": "npm publish dist --access public"
+    "prerelease": "npm whoami && npm run patch && npm run lint && npm run build",
+    "release": "npm publish dist --access public",
+    "jest": "jest",
+    "jest:debug": "node --inspect-brk=7878 ./node_modules/.bin/jest --runInBand",
+    "test": "jest",
+    "tsc": "tsc",
+    "eslint": "eslint",
+    "lint": "eslint src --ext .ts && tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -26,21 +31,41 @@
   "author": "nzuza",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^6.0.1",
-    "rollup": "^1.8.0",
-    "rollup-plugin-commonjs": "^9.2.2",
-    "rollup-plugin-json": "^4.0.0",
-    "rollup-plugin-node-resolve": "^4.0.1",
-    "rollup-plugin-sourcemaps": "^0.4.2"
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@nestjsx/crud-request": "^4.2.0",
+    "@nestjsx/util": "^4.2.0",
+    "@types/jest": "^24.0.17",
+    "@types/node": "^10.14.15",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "ra-core": "^2.9.5",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.19.4",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-node-resolve": "^4.2.4",
+    "rollup-plugin-peer-deps-external": "^2.2.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "typescript": "^3.5.3"
   },
   "bugs": {
     "url": "https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider/issues"
   },
   "homepage": "https://github.com/FusionWorks/react-admin-nestjsx-crud-dataprovider#readme",
-  "dependencies": {
-    "@nestjsx/crud-request": "^4.1.0"
-  },
+  "dependencies": {},
   "peerDependencies": {
-    "react-admin": "^2.8.5"
-  }
+    "ra-core": "^2.9.5",
+    "@nestjsx/crud-request": "^4.2.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
 }
