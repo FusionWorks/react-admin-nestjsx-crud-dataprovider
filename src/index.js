@@ -14,6 +14,11 @@ import {
 
 export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
   const composeFilter = (paramsFilter) => {
+
+    if (paramsFilter === '' || (typeof paramsFilter.q !== 'undefined' && paramsFilter.q === '')) {
+      paramsFilter = {}
+    }
+
     const flatFilter = fetchUtils.flattenObject(paramsFilter);
     const filter = Object.keys(flatFilter).map(key => {
       const splitKey = key.split('||');
