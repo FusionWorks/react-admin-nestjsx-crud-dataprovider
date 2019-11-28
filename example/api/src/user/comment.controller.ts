@@ -9,20 +9,18 @@ import {
 } from '@nestjsx/crud';
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
-
+import { CategoryService } from './category.service';
+import { CategoryEntity } from './category.entity';
+import { CommentService } from './CommentService';
+import { CommentEntity } from './comment.entity';
 @Crud({
   model: {
-    type: UserEntity,
-  },
-  query: {
-    join: {
-      categorys: {},
-    },
+    type: CommentEntity,
   },
 })
-@Controller('users')
-export class UserController {
-  constructor(public service: UserService) {}
+@Controller('comments')
+export class CommentController {
+  constructor(public service: CommentService) {}
 
   //http://localhost:3000/users?filter=firstname||starts||c&sort=id,DESC&per_page=10&offset=0&page=1
   //http://localhost:3000/users/custom
@@ -34,7 +32,7 @@ export class UserController {
       parsed: {
         fields: [],
         paramsFilter: [],
-        filter: [{ field: 'firstname', operator: 'starts', value: 'c' }],
+        filter: [],
         or: [],
         join: [],
         sort: [],
@@ -73,7 +71,7 @@ export class UserController {
     // return this.service.decidePagination(query.parsed, query.options);
     return this.service.getMany(query);
   }
-  get base(): CrudController<UserEntity> {
+  get base(): CrudController<CommentEntity> {
     return this;
   }
   @Override()

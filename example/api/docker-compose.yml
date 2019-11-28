@@ -1,0 +1,25 @@
+version: '3'
+# Image take command,environment,and port
+# If the db build,it don't take environment variable
+services:
+  db:
+    #build: https://github.com/guillaumeprevost/docker-mysql-utf8mb4
+    image: mysql:5.7
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max_allowed_packet=32505856
+    environment:
+      - MYSQL_DATABASE=testing
+      - MYSQL_ROOT_PASSWORD=testing
+    ports:
+      - '3306:3306'
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+
+    environment:
+      PMA_ARBITRARY: 1
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: testing
+    ports:
+      - '8000:80'
+    links:
+      # for mysql container
+      - 'db:db'

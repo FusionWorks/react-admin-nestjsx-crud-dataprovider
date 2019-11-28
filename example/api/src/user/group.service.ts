@@ -4,14 +4,16 @@ import { UserEntity } from './user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+import { PhotoEntity } from './photo.entity';
+import { GroupEntity } from './group.entity';
 
 @Injectable()
-export class UserService extends TypeOrmCrudService<UserEntity> {
+export class GroupService extends TypeOrmCrudService<GroupEntity> {
   // protected options: RestfulOptions = {
   //   exclude: ['password'],
   // };
 
-  constructor(@InjectRepository(UserEntity) repo) {
+  constructor(@InjectRepository(GroupEntity) repo) {
     super(repo);
   }
 }

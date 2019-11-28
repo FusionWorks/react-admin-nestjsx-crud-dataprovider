@@ -23,8 +23,10 @@
     "@nestjs/common": "^6.0.0",
     "@nestjs/core": "^6.0.0",
     "@nestjs/platform-express": "^6.0.0",
+    "@nestjs/swagger": "^3.1.0",
     "@nestjs/typeorm": "^6.0.0",
-    "@nestjsx/crud": "^3.2.0",
+    "@nestjsx/crud": "^4.0.0",
+    "@nestjsx/crud-typeorm": "^4.2.0",
     "class-transformer": "^0.2.0",
     "class-validator": "^0.9.1",
     "mysql": "^2.16.0",
@@ -32,6 +34,8 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.3.3",
+    "swagger": "^0.7.5",
+    "swagger-ui-express": "^4.0.7",
     "typeorm": "^0.2.16"
   },
   "devDependencies": {
